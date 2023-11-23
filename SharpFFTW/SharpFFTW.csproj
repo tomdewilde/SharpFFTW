@@ -18,8 +18,8 @@
 		<AssemblyName>SharpFFTW</AssemblyName>
 		<RootNamespace>SharpFFTW</RootNamespace>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/wo80/SharpFFTW</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/wo80/SharpFFTW</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/tomdewilde/SharpFFTW.git</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/tomdewilde/SharpFFTW.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>

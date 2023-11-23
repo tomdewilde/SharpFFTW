@@ -10,60 +10,83 @@ namespace SharpFFTW.Double
     /// </summary>
     public static class NativeMethods
     {
-        private const string Library = "fftw3";
-
         /// <summary>
         /// Allocates FFTW-optimized unmanaged memory.
         /// </summary>
         /// <param name="length">Amount to allocate, in bytes.</param>
         /// <returns>Pointer to allocated memory</returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_malloc",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_malloc(int length);
+        public static IntPtr fftw_malloc(int length)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_malloc(length);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_malloc(length);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Allocates FFTW-optimized unmanaged memory.
         /// </summary>
         /// <param name="length">Amount to allocate.</param>
         /// <returns>Pointer to allocated memory</returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_alloc_real",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_alloc_real(int length);
+        public static IntPtr fftw_alloc_real(int length)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_alloc_real(length);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_alloc_real(length);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Allocates FFTW-optimized unmanaged memory.
         /// </summary>
         /// <param name="length">Amount to allocate.</param>
         /// <returns>Pointer to allocated memory</returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_alloc_complex",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_alloc_complex(int length);
+        public static IntPtr fftw_alloc_complex(int length)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_alloc_complex(length);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_alloc_complex(length);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Deallocates memory allocated by FFTW malloc.
         /// </summary>
         /// <param name="mem">Pointer to memory to release.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_free",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_free(IntPtr mem);
+        public static void fftw_free(IntPtr mem)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_free(mem);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_free(mem);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Deallocates an FFTW plan and all associated resources.
         /// </summary>
         /// <param name="plan">Pointer to the plan to release.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_destroy_plan",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_destroy_plan(IntPtr plan);
+        public static void fftw_destroy_plan(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_destroy_plan(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_destroy_plan(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Clears all memory used by FFTW, resets it to initial state. Does not replace destroy_plan and free
@@ -72,11 +95,16 @@ namespace SharpFFTW.Double
         /// attempt to execute them nor to destroy them. You can however create and execute/destroy new plans, 
         /// in which case FFTW starts accumulating wisdom information again. 
         /// fftw_cleanup does not deallocate your plans; you should still call fftw_destroy_plan for this purpose.</remarks>
-        [DllImport(Library,
-             EntryPoint = "fftw_cleanup",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_cleanup();
+        public static void fftw_cleanup()
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_cleanup();
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_cleanup();
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Sets the maximum time that can be used by the planner.
@@ -90,22 +118,32 @@ namespace SharpFFTW.Double
         /// permitting) in Patient. If fftw_flags.Exhaustive is specified instead, the planner will further progress to 
         /// Exhaustive mode. 
         /// </remarks>
-        [DllImport(Library,
-             EntryPoint = "fftw_set_timelimit",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_set_timelimit(double seconds);
+        public static void fftw_set_timelimit(double seconds)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_set_timelimit(seconds);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_set_timelimit(seconds);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Executes an FFTW plan, provided that the input and output arrays still exist
         /// </summary>
         /// <param name="plan">Pointer to the plan to execute.</param>
         /// <remarks>execute (and equivalents) is the only function in FFTW guaranteed to be thread-safe.</remarks>
-        [DllImport(Library,
-             EntryPoint = "fftw_execute",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_execute(IntPtr plan);
+        public static void fftw_execute(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_execute(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_execute(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 1-dimensional complex-to-complex DFT.
@@ -115,12 +153,16 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="direction">Specifies the direction of the transform.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_1d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_1d(int n, IntPtr input, IntPtr output,
-            Direction direction, Options flags);
+        public static IntPtr fftw_plan_dft_1d(int n, IntPtr input, IntPtr output, Direction direction, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_1d(n, input, output, direction, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_1d(n, input, output, direction, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 2-dimensional complex-to-complex DFT.
@@ -131,12 +173,16 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="direction">Specifies the direction of the transform.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_2d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_2d(int nx, int ny, IntPtr input, IntPtr output,
-            Direction direction, Options flags);
+        public static IntPtr fftw_plan_dft_2d(int nx, int ny, IntPtr input, IntPtr output, Direction direction, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_2d(nx, ny, input, output, direction, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_2d(nx, ny, input, output, direction, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 3-dimensional complex-to-complex DFT.
@@ -148,12 +194,16 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="direction">Specifies the direction of the transform.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_3d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_3d(int nx, int ny, int nz, IntPtr input, IntPtr output,
-            Direction direction, Options flags);
+        public static IntPtr fftw_plan_dft_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Direction direction, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_3d(nx, ny, nz, input, output, direction, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_3d(nx, ny, nz, input, output, direction, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for an n-dimensional complex-to-complex DFT.
@@ -164,12 +214,16 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="direction">Specifies the direction of the transform.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft(int rank, int[] n, IntPtr input, IntPtr output,
-            Direction direction, Options flags);
+        public static IntPtr fftw_plan_dft(int rank, int[] n, IntPtr input, IntPtr output, Direction direction, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft(rank, n, input, output, direction, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft(rank, n, input, output, direction, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 1-dimensional real-to-complex DFT
@@ -178,11 +232,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_r2c_1d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_r2c_1d(int n, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_r2c_1d(int n, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_r2c_1d(n, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_r2c_1d(n, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 2-dimensional real-to-complex DFT
@@ -192,11 +251,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_r2c_2d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_r2c_2d(int nx, int ny, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_r2c_2d(int nx, int ny, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_r2c_2d(nx, ny, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_r2c_2d(nx, ny, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 3-dimensional real-to-complex DFT
@@ -207,11 +271,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_r2c_3d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_r2c_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_r2c_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_r2c_3d(nx, ny, nz, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_r2c_3d(nx, ny, nz, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for an n-dimensional real-to-complex DFT
@@ -221,11 +290,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="output">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_r2c",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_r2c(int rank, int[] n, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_r2c(int rank, int[] n, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_r2c(rank, n, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_r2c(rank, n, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 1-dimensional complex-to-real DFT
@@ -234,11 +308,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_c2r_1d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_c2r_1d(int n, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_c2r_1d(int n, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_c2r_1d(n, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_c2r_1d(n, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 2-dimensional complex-to-real DFT
@@ -248,11 +327,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_c2r_2d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_c2r_2d(int nx, int ny, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_c2r_2d(int nx, int ny, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_c2r_2d(nx, ny, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_c2r_2d(nx, ny, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 3-dimensional complex-to-real DFT
@@ -263,11 +347,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_c2r_3d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_c2r_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_c2r_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_c2r_3d(nx, ny, nz, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_c2r_3d(nx, ny, nz, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for an n-dimensional complex-to-real DFT
@@ -277,11 +366,16 @@ namespace SharpFFTW.Double
         /// <param name="input">Pointer to an array of 16-byte complex numbers.</param>
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_dft_c2r",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_dft_c2r(int rank, int[] n, IntPtr input, IntPtr output, Options flags);
+        public static IntPtr fftw_plan_dft_c2r(int rank, int[] n, IntPtr input, IntPtr output, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_dft_c2r(rank, n, input, output, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_dft_c2r(rank, n, input, output, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 1-dimensional real-to-real DFT
@@ -291,11 +385,16 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="kind">The kind of real-to-real transform to compute.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_r2r_1d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_r2r_1d(int n, IntPtr input, IntPtr output, Transform kind, Options flags);
+        public static IntPtr fftw_plan_r2r_1d(int n, IntPtr input, IntPtr output, Transform kind, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_r2r_1d(n, input, output, kind, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_r2r_1d(n, input, output, kind, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 2-dimensional real-to-real DFT
@@ -307,12 +406,16 @@ namespace SharpFFTW.Double
         /// <param name="kindx">The kind of real-to-real transform to compute along the first dimension.</param>
         /// <param name="kindy">The kind of real-to-real transform to compute along the second dimension.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_r2r_2d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_r2r_2d(int nx, int ny, IntPtr input, IntPtr output,
-            Transform kindx, Transform kindy, Options flags);
+        public static IntPtr fftw_plan_r2r_2d(int nx, int ny, IntPtr input, IntPtr output, Transform kindx, Transform kindy, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_r2r_2d(nx, ny, input, output, kindx, kindy, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_r2r_2d(nx, ny, input, output, kindx, kindy, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for a 3-dimensional real-to-real DFT
@@ -326,12 +429,16 @@ namespace SharpFFTW.Double
         /// <param name="kindy">The kind of real-to-real transform to compute along the second dimension.</param>
         /// <param name="kindz">The kind of real-to-real transform to compute along the third dimension.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_r2r_3d",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_r2r_3d(int nx, int ny, int nz, IntPtr input, IntPtr output,
-            Transform kindx, Transform kindy, Transform kindz, Options flags);
+        public static IntPtr fftw_plan_r2r_3d(int nx, int ny, int nz, IntPtr input, IntPtr output, Transform kindx, Transform kindy, Transform kindz, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_r2r_3d(nx, ny, nz, input, output, kindx, kindy, kindz, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_r2r_3d(nx, ny, nz, input, output, kindx, kindy, kindz, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Creates a plan for an n-dimensional real-to-real DFT
@@ -342,43 +449,62 @@ namespace SharpFFTW.Double
         /// <param name="output">Pointer to an array of 8-byte real numbers.</param>
         /// <param name="kind">An array containing the kind of real-to-real transform to compute along each dimension.</param>
         /// <param name="flags">Flags that specify the behavior of the planner.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_r2r",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_plan_r2r(int rank, int[] n, IntPtr input, IntPtr output,
-            Transform[] kind, Options flags);
+        public static IntPtr fftw_plan_r2r(int rank, int[] n, IntPtr input, IntPtr output, Transform[] kind, Options flags)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_plan_r2r(rank, n, input, output, kind, flags);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_plan_r2r(rank, n, input, output, kind, flags);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
 #if USE_THREADS
         /// <summary>
         /// Perform any one-time initialization required to use threads.
         /// </summary>
         /// <returns>Returns zero if there was some error and a non-zero value otherwise.</returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_init_threads",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern int fftw_init_threads();
+        public static int fftw_init_threads()
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_init_threads();
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_init_threads();
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Sets number of threads for FFTW to use.
         /// </summary>
         /// <param name="nthreads">The number of threads.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_plan_with_nthreads",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_plan_with_nthreads(int nthreads);
+        public static void fftw_plan_with_nthreads(int nthreads)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_plan_with_nthreads(nthreads);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_plan_with_nthreads(nthreads);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Determines the current number of threads that the planner can use.
         /// </summary>
         /// <returns>Number of threads that the planner can use.</returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_planner_nthreads",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern int fftw_planner_nthreads();
+        public static int fftw_planner_nthreads()
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_planner_nthreads();
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_planner_nthreads();
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Cleanup all memory and other resources allocated internally by FFTW.
@@ -387,20 +513,31 @@ namespace SharpFFTW.Double
         /// Much like the fftw_cleanup() function except that it also gets rid of threads-related data.
         /// You must not execute any previously created plans after calling this function.
         /// </remarks>
-        [DllImport(Library,
-             EntryPoint = "fftw_cleanup_threads",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_cleanup_threads();
+        public static void fftw_cleanup_threads()
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_cleanup_threads();
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_cleanup_threads();
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// See http://www.fftw.org/fftw3_doc/Thread-safety.html
         /// </summary>
-        [DllImport(Library,
-             EntryPoint = "fftw_make_planner_thread_safe",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_make_planner_thread_safe();
+        public static void fftw_make_planner_thread_safe()
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_make_planner_thread_safe();
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_make_planner_thread_safe();
+            else
+                throw new PlatformNotSupportedException();
+
+        }
+
 #endif
 
         /// <summary>
@@ -411,72 +548,107 @@ namespace SharpFFTW.Double
         /// <param name="mul">Reference to double to hold number of muls.</param>
         /// <param name="fma">Reference to double to hold number of fmas (fused multiply-add).</param>
         /// <remarks>Total flops ~= add+mul+2*fma or add+mul+fma if fma is supported</remarks>
-        [DllImport(Library,
-             EntryPoint = "fftw_flops",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_flops(IntPtr plan, out double add, out double mul, out double fma);
+        public static void fftw_flops(IntPtr plan, out double add, out double mul, out double fma)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_flops(plan, out add, out mul, out fma);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_flops(plan, out add, out mul, out fma);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Estimate cost of given plan.
         /// </summary>
         /// <param name="plan">Pointer to the plan.</param>
         /// <returns></returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_estimate_cost",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern double estimate_cost(IntPtr plan);
+        public static double estimate_cost(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.estimate_cost(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.estimate_cost(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Get cost of given plan.
         /// </summary>
         /// <param name="plan">Pointer to the plan.</param>
         /// <returns></returns>
-        [DllImport(Library,
-             EntryPoint = "fftw_cost",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern double cost(IntPtr plan);
+        public static double cost(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.cost(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.cost(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Outputs a "nerd-readable" version of the specified plan to stdout.
         /// </summary>
         /// <param name="plan">The plan to output.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_print_plan",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern void fftw_print_plan(IntPtr plan);
+        public static void fftw_print_plan(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                NativeMethods_x64.fftw_print_plan(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                NativeMethods_x86.fftw_print_plan(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Outputs a "nerd-readable" version of the specified plan.
         /// </summary>
         /// <param name="plan">The plan to output.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_sprint_plan",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr fftw_sprint_plan(IntPtr plan);
+        public static IntPtr fftw_sprint_plan(IntPtr plan)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_sprint_plan(plan);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_sprint_plan(plan);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Exports the accumulated Wisdom to the provided filename.
         /// </summary>
         /// <param name="filename">The target filename.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_export_wisdom_to_filename",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern int fftw_export_wisdom_to_filename(string filename);
+        public static int fftw_export_wisdom_to_filename(string filename)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_export_wisdom_to_filename(filename);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_export_wisdom_to_filename(filename);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
 
         /// <summary>
         /// Imports Wisdom from provided filename.
         /// </summary>
         /// <param name="filename">The filename to read from.</param>
-        [DllImport(Library,
-             EntryPoint = "fftw_import_wisdom_from_filename",
-             ExactSpelling = true,
-             CallingConvention = CallingConvention.Cdecl)]
-        public static extern int fftw_import_wisdom_from_filename(string filename);
+        public static int fftw_import_wisdom_from_filename(string filename)
+        {
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+                return NativeMethods_x64.fftw_import_wisdom_from_filename(filename);
+            else if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
+                return NativeMethods_x86.fftw_import_wisdom_from_filename(filename);
+            else
+                throw new PlatformNotSupportedException();
+
+        }
     }
 }

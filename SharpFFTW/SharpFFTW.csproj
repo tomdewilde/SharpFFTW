@@ -24,4 +24,8 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Single\Old.NativeMethods.cs" />
+  </ItemGroup>
+
 </Project>

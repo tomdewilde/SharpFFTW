@@ -21,11 +21,26 @@
     <PackageProjectUrl>https://github.com/wo80/SharpFFTW</PackageProjectUrl>
     <RepositoryUrl>https://github.com/wo80/SharpFFTW</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Single\Old.NativeMethods.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="fftw3-x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fftw3-x86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fftw3f-x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="fftw3f-x86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

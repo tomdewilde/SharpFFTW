@@ -9,6 +9,7 @@
     <Authors>Christian Woltering</Authors>
     <OutDir>$(ProjectDir)..\bin\$(Configuration)</OutDir>
     <RootNamespace>fftbench</RootNamespace>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

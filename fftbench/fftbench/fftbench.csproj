@@ -9,6 +9,7 @@
     <PackageIcon></PackageIcon>
     <Authors>Christian Woltering</Authors>
     <OutDir>$(ProjectDir)..\bin\$(Configuration)</OutDir>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

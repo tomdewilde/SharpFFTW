@@ -10,7 +10,7 @@ namespace SharpFFTW.Double
     /// </summary>
     public static class NativeMethods_x64
     {
-        private const string Library = "fftw3-64";
+        private const string Library = "fftw3-x64";
 
         /// <summary>
         /// Allocates FFTW-optimized unmanaged memory.
